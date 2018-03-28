@@ -19,17 +19,23 @@ import jks
 def test_jenkins_job_config():
     server = jks.Jenkins(url="http://192.168.150.191:8080/jenkins/", username="admin", password="admin")
 
-    name = 'web-ui-test'
-
+    name = 'web-test-xqy-all'
     job_info = server.get_job_info(name)
-    pprint.pprint(job_info.buildable)
-    pprint.pprint(job_info.build_stability)
-    pprint.pprint(job_info.last_build.url)
-    pprint.pprint(job_info.build_params.default_parameter_values)
+    lastbuild_number = job_info.last_build.number
 
-    pprint.pprint(job_info.build_params.parameter_defines)
-    pprint.pprint(job_info.last_build.number)
-    pprint.pprint(job_info.last_build.url)
+    build_info = server.get_build_info(name, lastbuild_number)
+
+    pprint.pprint(build_info.action.parameters)  # Started by timer
+    pprint.pprint(build_info.action.cause)
+
+    # pprint.pprint(job_info.buildable)
+    # pprint.pprint(job_info.build_stability)
+    # pprint.pprint(job_info.last_build.url)
+    # pprint.pprint(job_info.build_params.default_parameter_values)
+    #
+    # pprint.pprint(job_info.build_params.parameter_defines)
+    # pprint.pprint(job_info.last_build.number)
+    # pprint.pprint(job_info.last_build.url)
 
 
 def test_jenkins_build_info():

@@ -372,7 +372,10 @@ class BuildAction:
 
             elif _class == 'hudson.model.ParametersAction':
                 for param in action['parameters']:
-                    self._parameters.update({param['name']: param['value']})
+                    try:
+                        self._parameters.update({param['name']: param['value']})
+                    except:
+                        pass
             elif _class == 'hudson.plugins.git.util.BuildData':
                 self._by_branch_names = action['buildsByBranchName']
                 self._remote_urls = action['remoteUrls']

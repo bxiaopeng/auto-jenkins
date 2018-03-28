@@ -12,12 +12,12 @@
 # ---------------------------------------------------------------------------
 import pprint
 
-import autojenkins
+import jks
 
 
 # 获取某个job最后一次构建的配置
 def test_jenkins_job_config():
-    server = autojenkins.Jenkins(url="http://192.168.150.191:8080/jenkins/", username="admin", password="admin")
+    server = jks.Jenkins(url="http://192.168.150.191:8080/jenkins/", username="admin", password="admin")
 
     name = 'web-ui-test'
 
@@ -33,7 +33,7 @@ def test_jenkins_job_config():
 
 
 def test_jenkins_build_info():
-    server = autojenkins.Jenkins(url="http://10.199.132.55:8181/jenkins/", username="admin", password="admin")
+    server = jks.Jenkins(url="http://10.199.132.55:8181/jenkins/", username="admin", password="admin")
     name = 'api-test-xqy-finance'
 
     job_info = server.get_job_info(name)

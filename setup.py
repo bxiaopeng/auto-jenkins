@@ -16,7 +16,7 @@ required = [
 here = os.path.abspath(os.path.dirname(__file__))
 
 about = {}
-with open(os.path.join(here, "auto-jenkins", "__version__.py")) as f:
+with open(os.path.join(here, "jks", "__version__.py")) as f:
     exec(f.read(), about)
 
 if sys.argv[-1] == "publish":
@@ -97,7 +97,7 @@ class UploadCommand(Command):
 
 
 setup(
-    name="auto-jenkins",
+    name="autojks",
     version=about['__version__'],
     author="bxiaopeng",
     author_email="wirelessqa@163.com",

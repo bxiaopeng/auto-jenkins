@@ -9,7 +9,6 @@ Created by bixiaofan <wirelessqa@163.com> on 2018/3/23 at 下午3:59
 import socket
 
 import jenkins as jenkins_api
-
 from autojenkins import utils
 
 

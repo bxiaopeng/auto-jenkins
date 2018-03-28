@@ -1,16 +1,16 @@
 # -*- coding:utf-8 -*-
 
-import codecs
 import os
-import re
-
+import sys
 from shutil import rmtree
 
-import sys
-from setuptools import find_packages, setup,Command
+from setuptools import find_packages, setup, Command
 
 required = [
-    'jenkins-api',
+    'python-jenkins',
+    'arrow',
+    'ujson',
+    'requests'
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))

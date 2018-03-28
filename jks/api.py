@@ -194,7 +194,7 @@ class JobInfo:
             self.buildinfo = buildinfo
 
         @property
-        def nubmer(self):
+        def number(self):
             """构建号"""
             try:
                 return self.buildinfo['number']
@@ -310,7 +310,7 @@ class BuildInfo:
             return "0"
 
     @property
-    def timestamp(self) -> str:
+    def start_time(self) -> str:
         """构建开始时间"""
         try:
             return utils.humanize(self.buildinfo['timestamp'] / 1000)

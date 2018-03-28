@@ -28,7 +28,7 @@ def test_jenkins_job_config():
     pprint.pprint(job_info.build_params.default_parameter_values)
 
     pprint.pprint(job_info.build_params.parameter_defines)
-    pprint.pprint(job_info.last_build.nubmer)
+    pprint.pprint(job_info.last_build.number)
     pprint.pprint(job_info.last_build.url)
 
 
@@ -38,11 +38,14 @@ def test_jenkins_build_info():
 
     job_info = server.get_job_info(name)
 
-    lastbuild_number = job_info.last_build.nubmer
+    lastbuild_number = job_info.last_build.number
+
+    print(lastbuild_number)
+
     build_info = server.get_build_info(name, lastbuild_number)
     pprint.pprint(build_info.asdict)
     pprint.pprint(build_info.url)
     pprint.pprint(build_info.action.cause)  # Started by timer
     pprint.pprint(build_info.action.parameters)  # Started by timer
     pprint.pprint(build_info.duration)  # '00:00:01'
-    pprint.pprint(build_info.timestamp)  # '21小时前'
+    pprint.pprint(build_info.start_time)  # '21小时前'

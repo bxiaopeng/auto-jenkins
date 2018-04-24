@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-jenkins = "==0.4.16"
+python-jenkins = "==1.0.0"
 requests = "*"
 ujson = "*"
 arrow = "*"

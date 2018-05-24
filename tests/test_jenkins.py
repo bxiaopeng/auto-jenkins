@@ -59,6 +59,7 @@ def test_jenkins_build_info():
     pprint.pprint(build_info.action.by_branch_names)  # 'git 址址'
 
 
+
 def test_is_valid_job():
     assert not auto_jenkins.is_valid_job("http://10.199.132.55:8181/jenkins/job/api-test-peixun2/", "admin", "admin")
     assert auto_jenkins.is_valid_job("http://10.199.132.55:8181/jenkins/job/api-test-peixun/", "admin", "admin")
@@ -71,3 +72,12 @@ def test_get_job_info():
 
     assert job_info.url == "http://10.199.132.55:8181/jenkins/job/api-test-xqy-finance/"
     assert job_info.name == "api-test-xqy-finance"
+
+    pprint.pprint(job_info.last_failed_build.url)
+    pprint.pprint(job_info.last_failed_build.number)
+    pprint.pprint(job_info.last_successful_build.url)
+    pprint.pprint(job_info.last_successful_build.number)
+    pprint.pprint(job_info.last_completed_build.url)
+    pprint.pprint(job_info.last_completed_build.number)
+    pprint.pprint(job_info.last_build.number)
+    pprint.pprint(job_info.last_build.url)

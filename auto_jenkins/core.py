@@ -168,7 +168,7 @@ class JobInfo:
 
     @property
     def last_failed_build(self):
-        return self.BuildInfo(self.jobinfo['last_completed_build'])
+        return self.BuildInfo(self.jobinfo['lastFailedBuild'])
 
     @property
     def last_stable_build(self):

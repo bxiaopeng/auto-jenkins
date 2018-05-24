@@ -6,10 +6,45 @@
 Created by bixiaofan <wirelessqa@163.com> on 2018/3/23 at 下午3:59
 """
 
-import socket
-
 import jenkins as jenkins_api
+import socket
+from furl import furl
+
 from . import utils
+
+
+def _split_jenkins_url_job_name(job_url):
+    """从job url中分离 jenkins url and job name"""
+    f = furl(job_url)
+    segments = f.path.segments
+
+    if str(job_url).endswith("/"):
+        job_name = segments[-2]
+    else:
+        job_name = segments[-1]
+
+    f.path = "jenkins"
+
+    return str(f), job_name
+
+
+def is_valid_job(job_url, username=None, password=None):
+    """ 判断jenkins job 是否有效"""
+    jenkins_url, job_name = _split_jenkins_url_job_name(job_url)
+
+    try:
+        job_info = Jenkins(jenkins_url, username, password).get_job_info(job_name)
+    except Exception:
+        return False
+    return job_info.displayname is not None
+
+
+def get_job_info(job_url, username=None, password=None):
+    jenkins_url, job_name = _split_jenkins_url_job_name(job_url)
+    try:
+        return Jenkins(jenkins_url, username, password).get_job_info(job_name)
+    except:
+        return None
 
 
 class Jenkins(jenkins_api.Jenkins):
@@ -407,4 +442,7 @@ class BuildAction:
     @property
     def remote_urls(self) -> list:
         """仓库地址"""
-        return self._remote_urls
+        try:
+            return self._remote_urls
+        except:
+            return None

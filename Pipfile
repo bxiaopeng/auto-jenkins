@@ -8,9 +8,10 @@ python-jenkins = "==1.0.0"
 requests = "*"
 ujson = "*"
 arrow = "*"
+furl = "*"
 
 [dev-packages]
-pytest = "*"
+pytest = "3.6.0"
 
 [requires]
 python_version = "3.6"

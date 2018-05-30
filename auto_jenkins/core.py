@@ -42,9 +42,15 @@ def is_valid_job(job_url, username=None, password=None):
 def get_job_info(job_url, username=None, password=None):
     jenkins_url, job_name = _split_jenkins_url_job_name(job_url)
     try:
-        return Jenkins(jenkins_url, username, password).get_job_info(job_name)
+        return server(jenkins_url, username, password).get_job_info(job_name)
     except:
         return None
+
+
+def server(job_url: str, username: str, password: str):
+    """通过job url 获取 server"""
+    jenkins_url, job_name = _split_jenkins_url_job_name(job_url)
+    return Jenkins(jenkins_url, username, password)
 
 
 class Jenkins(jenkins_api.Jenkins):

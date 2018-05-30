@@ -81,3 +81,11 @@ def test_get_job_info():
     pprint.pprint(job_info.last_completed_build.number)
     pprint.pprint(job_info.last_build.number)
     pprint.pprint(job_info.last_build.url)
+
+def test_get_server():
+    server = auto_jenkins.server("http://10.199.132.55:8181/jenkins/api-test-xqy-finance",
+                                         username="admin",
+                                         password="admin")
+
+    job_info = server.get_job_info("api-test-xqy-finance")
+    print(job_info.name)

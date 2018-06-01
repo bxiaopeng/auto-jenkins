@@ -312,6 +312,43 @@ class BuildParameters:
 
         return new_paramdefines
 
+    @property
+    def defines(self) -> list:
+        """获取参数的定义
+
+        返回的格式：
+        [{'name': 'test', 'description': '指定测试路径', 'type': 'string', 'values': '', 'default_value': 'tests/'},]
+        """
+        parameter_defines = self.parameter_defines
+
+        param_infos = []
+        for param in parameter_defines:
+            param_name = param.get("name")
+            param_type = param.get("type")
+            param_description = param.get("description")
+
+            new_param_type = ""
+            param_values = ""
+
+            if param_type == "ChoiceParameterDefinition":
+                param_values = param.get("choices")
+                new_param_type = "choices"
+            elif param_type == "PasswordParameterDefinition":
+                new_param_type = "password"
+            elif param_type == "StringParameterDefinition":
+                new_param_type = "string"
+
+            default_value = param.get("default_param_value").get("value")
+
+            param_infos.append({"name": param_name,
+                                "description": param_description,
+                                "type": new_param_type,
+                                "values": param_values,
+                                "default_value": default_value
+                                })
+
+        return param_infos
+
 
 class BuildInfo:
     def __init__(self, buildinfo: dict):

@@ -9,11 +9,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-jenkins = "==1.0.0"
+python-jenkins = "==1.0.1"
 requests = "*"
 ujson = "*"
 arrow = "*"
-furl = "*"
+furl = "==1.1"
 
 [dev-packages]
 pytest = "3.6.0"

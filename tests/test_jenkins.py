@@ -85,7 +85,7 @@ def test_get_job_info():
 
 
 def test_get_server():
-    server = auto_jenkins.server("http://10.199.132.55:8181/jenkins/api-test-xqy-finance",
+    server = auto_jenkins.connect("http://10.199.132.55:8181/jenkins/api-test-xqy-finance",
                                  username="admin",
                                  password="admin")
 
@@ -149,7 +149,7 @@ def test_get_server():
 
 def test_get_build_params_defines():
     """测试获取定义的参数信息列表"""
-    server = auto_jenkins.server("http://192.168.150.191:8080/jenkins/job/web-test-xqy-all",
+    server = auto_jenkins.connect("http://192.168.150.191:8080/jenkins/job/web-test-xqy-all",
                                  username="admin",
                                  password="admin")
 

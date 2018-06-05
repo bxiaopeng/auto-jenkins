@@ -1,6 +1,7 @@
-Version 0.0.3.1(2018-06-05)
+Version 0.0.3.2(2018-06-05)
 - 升级了 python-jenkins 版本到 1.0.1
 - 升级了 furl 版本到 1.1
+- 修改了 auto_jenkins.server，改为 auto_jenkins.connect
 
 Version 0.0.3(2018-06-01)
 - 新增了获取构建参数信息列表的方法，对原来的列表进行了优化；

@@ -10,7 +10,6 @@
 #  OS:             Mac OS X
 #  Python Version: 3.6.4
 # ---------------------------------------------------------------------------
-import time
 
 import pprint
 
@@ -86,8 +85,8 @@ def test_get_job_info():
 
 def test_get_server():
     server = auto_jenkins.connect("http://10.199.132.55:8181/jenkins/api-test-xqy-finance",
-                                 username="admin",
-                                 password="admin")
+                                  username="admin",
+                                  password="admin")
 
     job_info = server.get_job_info("api-test-xqy-finance")
     print(job_info.name)
@@ -149,8 +148,25 @@ def test_get_server():
 
 def test_get_build_params_defines():
     """测试获取定义的参数信息列表"""
-    server = auto_jenkins.connect("http://192.168.150.191:8080/jenkins/job/web-test-xqy-all",
-                                 username="admin",
-                                 password="admin")
+    server = auto_jenkins.connect("http://10.199.132.55:8181/jenkins/job/api-test-xqy-finance",
+                                  username="admin",
+                                  password="admin")
 
-    print(server.get_job_info("web-test-xqy-all").build_params.defines)
+    print(server.get_job_info("api-test-xqy-finance").build_params.defines)
+    job_info = server.get_job_info("api-test-xqy-finance")
+
+    print(job_info.last_build.number)
+
+    queue_item = server.build_job("api-test-xqy-finance",
+                     parameters={
+                         'env': "test",
+                         'module': "finance",
+                         'plevel': "p1"
+                     })
+    print(job_info.is_in_queue)
+    print(job_info.buildable)
+
+    print(job_info.next_build_number)
+    # pprint.pprint(job_info.jobinfo)
+
+    # pprint.pprint(server.get_build_info("api-test-xqy-finance", job_info.next_build_number).buildinfo)

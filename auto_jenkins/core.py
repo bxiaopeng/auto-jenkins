@@ -355,7 +355,7 @@ class BuildInfo:
         self.buildinfo = buildinfo
 
     @property
-    def nubmer(self):
+    def number(self):
         """构建号"""
         try:
             return self.buildinfo['number']

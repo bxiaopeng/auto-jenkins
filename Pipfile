@@ -9,14 +9,15 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-python-jenkins = "==1.0.2"
+python-jenkins = "==1.1.0"
 requests = "==2.19.1"
 ujson = "*"
 arrow = "*"
-furl = "==1.1"
+furl = "==1.2"
+schedule = "*"
 
 [dev-packages]
-pytest = "==3.6.1"
+pytest = "==3.6.3"
 
 [requires]
 python_version = "3.6"

@@ -66,7 +66,8 @@ def test_is_valid_job():
 
 
 def test_get_job_info():
-    job_info = auto_jenkins.get_job_info("http://10.199.132.55:8181/jenkins/api-test-xqy-finance",
+    """通过 job url 直接获取 job info"""
+    job_info = auto_jenkins.get_job_info("http://10.199.132.55:8181/jenkins/job/api-test-xqy-finance/",
                                          username="admin",
                                          password="admin")
 
@@ -84,11 +85,11 @@ def test_get_job_info():
 
 
 def test_get_server():
-    server = auto_jenkins.connect("http://10.199.132.55:8181/jenkins/api-test-xqy-finance",
-                                  username="admin",
-                                  password="admin")
+    server, job_name = auto_jenkins.connect_job("http://10.199.132.55:8181/jenkins/api-test-xqy-finance",
+                                                username="admin",
+                                                password="admin")
 
-    job_info = server.get_job_info("api-test-xqy-finance")
+    job_info = server.get_job_info(job_name)
     print(job_info.name)
 
 
@@ -148,21 +149,21 @@ def test_get_server():
 
 def test_get_build_params_defines():
     """测试获取定义的参数信息列表"""
-    server = auto_jenkins.connect("http://10.199.132.55:8181/jenkins/job/api-test-xqy-finance",
-                                  username="admin",
-                                  password="admin")
+    server, job_name = auto_jenkins.connect_job("http://10.199.132.55:8181/jenkins/job/api-test-xqy-finance",
+                                                username="admin",
+                                                password="admin")
 
-    print(server.get_job_info("api-test-xqy-finance").build_params.defines)
-    job_info = server.get_job_info("api-test-xqy-finance")
+    print(server.get_job_info(job_name).build_params.defines)
+    job_info = server.get_job_info(job_name)
 
     print(job_info.last_build.number)
 
-    queue_item = server.build_job("api-test-xqy-finance",
-                     parameters={
-                         'env': "test",
-                         'module': "finance",
-                         'plevel': "p1"
-                     })
+    queue_item = server.build_job(job_name,
+                                  parameters={
+                                      'env': "test",
+                                      'module': "finance",
+                                      'plevel': "p1"
+                                  })
     print(job_info.is_in_queue)
     print(job_info.buildable)
 
@@ -170,3 +171,61 @@ def test_get_build_params_defines():
     # pprint.pprint(job_info.jobinfo)
 
     # pprint.pprint(server.get_build_info("api-test-xqy-finance", job_info.next_build_number).buildinfo)
+
+
+def test_get_build_params_defines_profile():
+    """测试获取定义的参数信息列表(性能测试那个)"""
+    server, job_name = auto_jenkins.connect_job("http://10.98.17.52:8082/jenkins/job/xqy_jmeter_test/",
+                                                username="admin",
+                                                password="xqy_admin")
+
+    pprint.pprint(server.get_job_info(job_name).build_params.defines)
+
+    parameters = {
+        'api': "",
+        'jmx_path': '',
+        'times': '',
+        'period': ''
+    }
+    # server.build_job()
+
+    job_info = server.get_job_info(job_name)
+    print(job_info.last_build.number)
+
+
+def test_build_job():
+    """测试获取定义的参数信息列表"""
+    server, job_name = auto_jenkins.connect_job("http://10.199.132.55:8181/jenkins/view/apitest/job/api-test-uc/",
+                                                username="admin",
+                                                password="admin")
+
+    print(server.get_job_info(job_name).build_params.defines)
+
+    parameters = {
+        'env': "test"
+    }
+    server.build_job(job_name, parameters)
+
+
+def test_build_job_checkbox():
+    """构建任务的参数是 checkbox """
+    server, job_name = auto_jenkins.connect_job("http://10.199.132.55:8181/jenkins/job/api-test-xxb-jzjf/",
+                                                username="admin",
+                                                password="admin")
+
+    pprint.pprint(server.get_job_info(job_name).build_params.defines)
+    pprint.pprint(server.get_job_info(job_name).build_params.default_parameter_values)
+
+    # parameters = {
+    #     'env': "test"
+    # }
+    # server.build_job("api-test-xxb-jzjf",{'env': 'test', 'plevel': 'all', 'groups': '"wlqd,invoie'})
+
+
+def test_build_job_no_param():
+    """构建任务无构建参数"""
+    server, job_name = auto_jenkins.connect_job("http://192.168.110.173:8080/jenkins/job/invoice-api-test/",
+                                                username="admin",
+                                                password="hswy")
+
+    pprint.pprint(server.get_job_info(job_name).build_params.default_parameter_values)

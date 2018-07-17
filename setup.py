@@ -10,7 +10,8 @@ required = [
     'python-jenkins',
     'arrow',
     'ujson',
-    'requests'
+    'requests',
+    'furl'
 ]
 
 here = os.path.abspath(os.path.dirname(__file__))

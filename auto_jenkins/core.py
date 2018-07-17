@@ -13,7 +13,7 @@ from furl import furl
 from . import utils
 
 
-def _split_jenkins_url_job_name(job_url):
+def _split_jenkins_url_job_name(job_url: str):
     """从job url中分离 jenkins url and job name"""
     f = furl(job_url)
     segments = f.path.segments
@@ -28,7 +28,7 @@ def _split_jenkins_url_job_name(job_url):
     return str(f), job_name
 
 
-def is_valid_job(job_url, username=None, password=None):
+def is_valid_job(job_url: str, username: str = None, password: str = None) -> bool:
     """ 判断jenkins job 是否有效"""
     jenkins_url, job_name = _split_jenkins_url_job_name(job_url)
 
@@ -39,17 +39,35 @@ def is_valid_job(job_url, username=None, password=None):
     return job_info.displayname is not None
 
 
-def get_job_info(job_url, username=None, password=None):
+def get_job_info(job_url: str, username=None, password=None):
     jenkins_url, job_name = _split_jenkins_url_job_name(job_url)
     try:
-        return connect(jenkins_url, username, password).get_job_info(job_name)
+        server, _ = connect_job(jenkins_url, username, password)
+        return server.get_job_info(job_name)
     except:
         return None
 
 
-def connect(job_url: str, username: str, password: str):
-    """通过job url 获取 server"""
+def connect_job(job_url: str, username: str = None, password: str = None):
+    """
+    通过job url 获取 server 和 job name
+    :param job_url: JOB 的 URL 地址
+    :param username: 用户名
+    :param password: 密码
+    :return:         server,job_name
+    """
     jenkins_url, job_name = _split_jenkins_url_job_name(job_url)
+    return Jenkins(jenkins_url, username, password), job_name
+
+
+def connect_jenkins(jenkins_url: str, username: str = None, password: str = None):
+    """
+    连接 jenkins
+    :param jenkins_url:
+    :param username:
+    :param password:
+    :return:
+    """
     return Jenkins(jenkins_url, username, password)
 
 
@@ -258,7 +276,7 @@ class BuildParameters:
     @property
     def default_parameter_values(self) -> dict or None:
         """
-        默认参数值
+        获取任务构建的默认参数值
         :return  e.g. [{'severity':"block"},]
         """
 
@@ -279,7 +297,7 @@ class BuildParameters:
 
     @property
     def parameter_defines(self) -> list:
-        """参数定义"""
+        """获取构建参数的定义"""
 
         paramdefines = []
 
@@ -314,12 +332,24 @@ class BuildParameters:
 
     @property
     def defines(self) -> list:
-        """获取参数的定义
+        """获取构建参数的定义，并格式化参数类型
 
-        返回的格式：
+        格式化后的参数类型：
+        字符串 -> string
+        选择 -> choices
+        复选框 -> checkbox
+
+        usage:
+        server.get_job_info("job_name").build_params.defines
+
+        return：
         [{'name': 'test', 'description': '指定测试路径', 'type': 'string', 'values': '', 'default_value': 'tests/'},]
+
+        如果为空，则返回 []
         """
         parameter_defines = self.parameter_defines
+
+        # pprint.pprint(parameter_defines)
 
         param_infos = []
         for param in parameter_defines:
@@ -337,8 +367,15 @@ class BuildParameters:
                 new_param_type = "password"
             elif param_type == "StringParameterDefinition":
                 new_param_type = "string"
+            elif param_type == "PT_CHECKBOX":
+                new_param_type = "checkbox"
+            elif param_type == "PT_SINGLE_SELECT":
+                new_param_type = "single_select"
 
-            default_value = param.get("default_param_value").get("value")
+            default_value = param.get("default_param_value")
+
+            if default_value:
+                default_value = param.get("default_param_value").get("value")
 
             param_infos.append({"name": param_name,
                                 "description": param_description,
@@ -483,9 +520,9 @@ class BuildAction:
         return self._by_branch_names
 
     @property
-    def remote_urls(self) -> list:
+    def remote_urls(self) -> list or None:
         """仓库地址"""
         try:
             return self._remote_urls
-        except:
+        except Exception:
             return None

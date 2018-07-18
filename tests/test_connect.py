@@ -6,6 +6,7 @@
 Created by bixiaofan <wirelessqa@163.com> on 2018/7/17 at 下午1:48
 """
 import pprint
+import pytest
 
 import auto_jenkins
 
@@ -30,7 +31,7 @@ def test_connect():
 
     assert defines == defines2 == defines3
 
-
+@pytest.mark.skip
 def test_connect2():
     # 通过 job url 获取 server 和 job_name
     server, job_name = auto_jenkins.connect_job(JOB_URL)
@@ -40,9 +41,19 @@ def test_connect2():
         "ucEnv": "uc-sit"
     }
 
-    # pprint.pprint(server.get_job_info(job_name).build_params.defines)
-
     server.build_checkbox_job(job_name,build_params,checkbox="activity,boss")
 
-    # server.build_job(job_name,build_params)
+
+
+@pytest.mark.skip
+def test_connect3():
+    # 通过 job url 获取 server 和 job_name
+    server, job_name = auto_jenkins.connect_job("http://10.199.132.55:8181/jenkins/job/SyncIris/")
+    assert JOB_NAME == job_name
+    build_params = {
+        "xqyEnv": "xqy-test",
+        "ucEnv": "uc-sit"
+    }
+
+    server.build_checkbox_job(job_name,build_params,checkbox="activity,boss")
 

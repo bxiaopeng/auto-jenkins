@@ -109,15 +109,43 @@ class Jenkins(jenkins_api.Jenkins):
         server.build_checkbox_job(job_name, {'env': 'test', 'plevel': 'all'},checkbox="wlqd")
         """
         default_config = self.get_job_config(job_name)
+
+        # pprint.pprint(default_config)
         # 从默认配置中找到要被替换的一整行内容
         be_replace = "<defaultValue>" + re.findall(r"<defaultValue>(.+?)</defaultValue>", default_config)[
             0] + "</defaultValue>"
-        # 用新的内容替换
+
+        # pprint.pprint(be_replace)
+
+
+        # be_replace_part = start+re.findall(r"{}(.+?){}".format(start,end),default_config,re.S)[0]+end
+        config_lines = default_config.split("\n")
+
+        be_replace_part = ""
+        be_replace_part_default_value= ""
+
+        # 遍历配置文件
+        for index, line in enumerate(config_lines):
+            # 通过PT_CHECKBOX查找
+            if "<type>PT_CHECKBOX</type>" in str(line):
+                default_value_index = index + 2
+
+                # 找到  '<defaultValue></defaultValue>\n'
+                be_replace_part_default_value =  config_lines[default_value_index]
+                # 找到  '<defaultValue></defaultValue>\n' 和它的上一行
+                be_replace_part = config_lines[default_value_index - 1] + "\n" + config_lines[default_value_index]
+                print("默认值是: {}".format(be_replace_part))
+                break
+
+        # 用新的defaultValue替换
         replaces = '<defaultValue>{}</defaultValue>'.format(checkbox)
 
-        # 替换
-        new_config = default_config.replace(be_replace, replaces)
+        # 把一小部分替换
+        new_config_part = be_replace_part.replace(be_replace_part_default_value, replaces)
 
+        # 把整个配置替换
+        new_config = default_config.replace(be_replace_part, new_config_part)
+        # pprint.pprint(new_config)
         try:
             # 重新替换
             self.reconfig_job(job_name, new_config)

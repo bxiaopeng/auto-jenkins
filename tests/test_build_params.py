@@ -17,23 +17,6 @@ def test_build_job_checkbox():
                                                 username="admin",
                                                 password="admin")
 
-    # pprint.pprint(server.get_job_info(job_name).build_params.defines)
-    # pprint.pprint(server.get_job_info(job_name).build_params.default_parameter_values)
-
-    # default_config = server.get_job_config(job_name)
-    #
-    # # 从默认配置中找到要被替换的一整行内容
-    # be_replace =  "<defaultValue>" + re.findall(r"<defaultValue>(.+?)</defaultValue>", default_config)[0] +"</defaultValue>"
-    # # 用新的内容替换
-    # replaces = '<defaultValue>wlqd,invoie,printExpress</defaultValue>'
-    #
-    # # 替换
-    # new_config = default_config.replace(be_replace,replaces)
-    #
-    # # 重新替换
-    # server.reconfig_job(job_name,new_config)
-
-
     # parameters = {
     #     'env': "test"
     # }

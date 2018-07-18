@@ -1,18 +1,26 @@
+Version 0.0.3.4(2018-07-18)
+------------------------------
+- 添加函数 build_checkbox_job
+
 Version 0.0.3.3(2018-07-17)
+------------------------------
 - Bump python-jenkins form 1.0.1 to 1.1.0
 - Change function connect() to connect_job()
 - Add function connect_jenkins()
 - Add some test case for _split_jenkins_url_job_name
 
 Version 0.0.3.2(2018-06-05)
+------------------------------
 - 升级了 python-jenkins 版本到 1.0.1
 - 升级了 furl 版本到 1.1
 - 修改了 auto_jenkins.server，改为 auto_jenkins.connect_job
 
 Version 0.0.3(2018-06-01)
+------------------------------
 - 新增了获取构建参数信息列表的方法，对原来的列表进行了优化；
 
 Version 0.0.2(2018-05-24)
+------------------------------
 - 新增了 build_info 和 job_info 接口的封装
 - 新增了判断 jenkins job 地址是否有效的函数
 - 新增了通过 jenkins job 地址获取任务信息的函数

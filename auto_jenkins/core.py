@@ -7,6 +7,8 @@ Created by bixiaofan <wirelessqa@163.com> on 2018/3/23 at 下午3:59
 """
 
 import jenkins as jenkins_api
+import pprint
+import re
 import socket
 from furl import furl
 
@@ -95,6 +97,35 @@ class Jenkins(jenkins_api.Jenkins):
         buildinfo = super().get_build_info(name, number, depth)
 
         return BuildInfo(buildinfo)
+
+    def build_checkbox_job(self, job_name, params: dict, checkbox: str):
+        """
+        构建有多选框的任务，因为多选框是通过插件获得的功能，直接传入参数不能被接收，因此通过配置默认参数来解决这个问题。
+        :param job_name:
+        :param params:     不包括 checkbox 参数的字典,如：{'env': 'test', 'plevel': 'all'}
+        :param checkbox:   checkbox 的值，如:"one,two"
+
+        例:
+        server.build_checkbox_job(job_name, {'env': 'test', 'plevel': 'all'},checkbox="wlqd")
+        """
+        default_config = self.get_job_config(job_name)
+        # 从默认配置中找到要被替换的一整行内容
+        be_replace = "<defaultValue>" + re.findall(r"<defaultValue>(.+?)</defaultValue>", default_config)[
+            0] + "</defaultValue>"
+        # 用新的内容替换
+        replaces = '<defaultValue>{}</defaultValue>'.format(checkbox)
+
+        # 替换
+        new_config = default_config.replace(be_replace, replaces)
+
+        try:
+            # 重新替换
+            self.reconfig_job(job_name, new_config)
+
+            self.build_job(job_name, params)
+        finally:
+            # 还原配置
+            self.reconfig_job(job_name, default_config)
 
 
 class JobInfo:
@@ -272,6 +303,8 @@ class JobInfo:
 class BuildParameters:
     def __init__(self, buildparams):
         self.buildparams = buildparams
+
+        pprint.pprint(buildparams)
 
     @property
     def default_parameter_values(self) -> dict or None:

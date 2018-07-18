@@ -5,6 +5,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Created by bixiaofan <wirelessqa@163.com> on 2018/7/17 at 下午1:48
 """
+import pprint
 
 import auto_jenkins
 
@@ -28,3 +29,20 @@ def test_connect():
     defines3 = server3.get_job_info(JOB_NAME).build_params.defines
 
     assert defines == defines2 == defines3
+
+
+def test_connect2():
+    # 通过 job url 获取 server 和 job_name
+    server, job_name = auto_jenkins.connect_job(JOB_URL)
+    assert JOB_NAME == job_name
+    build_params = {
+        "xqyEnv": "xqy-test",
+        "ucEnv": "uc-sit"
+    }
+
+    # pprint.pprint(server.get_job_info(job_name).build_params.defines)
+
+    server.build_checkbox_job(job_name,build_params,checkbox="activity,boss")
+
+    # server.build_job(job_name,build_params)
+

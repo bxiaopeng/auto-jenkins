@@ -207,25 +207,3 @@ def test_build_job():
     server.build_job(job_name, parameters)
 
 
-def test_build_job_checkbox():
-    """构建任务的参数是 checkbox """
-    server, job_name = auto_jenkins.connect_job("http://10.199.132.55:8181/jenkins/job/api-test-xxb-jzjf/",
-                                                username="admin",
-                                                password="admin")
-
-    pprint.pprint(server.get_job_info(job_name).build_params.defines)
-    pprint.pprint(server.get_job_info(job_name).build_params.default_parameter_values)
-
-    # parameters = {
-    #     'env': "test"
-    # }
-    # server.build_job("api-test-xxb-jzjf",{'env': 'test', 'plevel': 'all', 'groups': '"wlqd,invoie'})
-
-
-def test_build_job_no_param():
-    """构建任务无构建参数"""
-    server, job_name = auto_jenkins.connect_job("http://192.168.110.173:8080/jenkins/job/invoice-api-test/",
-                                                username="admin",
-                                                password="hswy")
-
-    pprint.pprint(server.get_job_info(job_name).build_params.default_parameter_values)

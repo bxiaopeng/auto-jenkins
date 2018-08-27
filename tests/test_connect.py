@@ -14,7 +14,7 @@ JOB_URL = "http://10.199.132.55:8181/jenkins/job/SyncIris/"
 JENKINS_URL = "http://10.199.132.55:8181/jenkins"
 JOB_NAME = "SyncIris"
 
-
+@pytest.mark.skip
 def test_connect():
     # 通过 job url 获取 server 和 job_name
     server, job_name = auto_jenkins.connect_job(JOB_URL)
@@ -28,6 +28,9 @@ def test_connect():
     # 直接通过 Jenkins 这个类连接
     server3 = auto_jenkins.Jenkins(JENKINS_URL)
     defines3 = server3.get_job_info(JOB_NAME).build_params.defines
+
+
+    pprint.pprint(defines)
 
     assert defines == defines2 == defines3
 
@@ -56,4 +59,3 @@ def test_connect3():
     }
 
     server.build_checkbox_job(job_name,build_params,checkbox="activity,boss")
-

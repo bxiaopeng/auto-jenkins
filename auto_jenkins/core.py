@@ -5,7 +5,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 Created by bixiaofan <wirelessqa@163.com> on 2018/3/23 at 下午3:59
 """
-
+import arrow
 import jenkins as jenkins_api
 import pprint
 import re
@@ -486,12 +486,16 @@ class BuildInfo:
             return "0"
 
     @property
-    def start_time(self) -> str:
-        """构建开始时间"""
+    def start_time_humanize(self) -> str:
+        """构建开始时间(返回人类可读的时间)"""
         try:
             return utils.humanize(self.buildinfo['timestamp'] / 1000)
         except:
             return self.buildinfo['timestamp']
+    @property
+    def start_time(self):
+        """构建开始时间"""
+        return arrow.get(self.buildinfo['timestamp'] / 1000).to('local').format("YYYY-MM-DD HH:mm:ss")
 
     @property
     def result(self):

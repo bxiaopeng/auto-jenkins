@@ -204,6 +204,6 @@ def test_build_job():
     parameters = {
         'env': "test"
     }
-    server.build_job(job_name, parameters)
+    # server.build_job(job_name, parameters)
 
 
